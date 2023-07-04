@@ -1,0 +1,344 @@
+uid: yandex_station
+tags:
+  - YandexStation
+props:
+  parameters: []
+  parameterGroups: []
+timestamp: Jul 4, 2023, 3:10:02 PM
+component: BlockLibrary
+config:
+  name: Yandex Station
+slots:
+  blocks:
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: MESSAGE
+            type: input_value
+          - align: right
+            name: STATION
+            type: input_value
+          - align: right
+            name: WHISPER
+            type: field_checkbox
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: Say text %1 on staton %2 with whisper %3
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: sayText
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).sayText({{input:MESSAGE}}, '{{field:WHISPER}}' === 'TRUE');
+        toolbox:
+          - component: PresetInput
+            config:
+              fields:
+                TEXT: message
+              name: MESSAGE
+              shadow: true
+              type: text
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: MESSAGE
+            type: input_value
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: Send voice command %1 to staton %2
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: voiceCommand
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).voiceCommand({{input:MESSAGE}});
+        toolbox:
+          - component: PresetInput
+            config:
+              fields:
+                TEXT: message
+              name: MESSAGE
+              shadow: true
+              type: text
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: Start playing on staton %1
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: play
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).play();
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: Stop playing on staton %1
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: stop
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).stop();
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: Next Track command on staton %1
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: next
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).next();
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: Prev Track on staton %1
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: prev
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).prev();
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: VolumeUp on staton %1
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: VolumeUp
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).volumeUp();
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: VolumeDown on staton %1
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: VolumeDown
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).volumeDown();
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: VOLUME
+            type: input_value
+            check: Number
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: true
+        lastDummyAlign0: right
+        message0: Set volume %1 on staton %2
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: setVolume
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).setVolume({{input:VOLUME}});
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: STATION
+            type: input_value
+          - align: right
+            name: UNMUTE
+            type: field_checkbox
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: Mute volume on staton %1 with unmute %2
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: mute
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).mute('{{field:UNMUTE}}' === 'FALSE');
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: STATION
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: Stop listening on staton %1
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: ""
+        type: stopListening
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:things}}.getActions('yandexstation', {{input:STATION}}).stopListening();
+        toolbox:
+          - component: PresetInput
+            config:
+              name: STATION
+              shadow: true
+              type: oh_thing
+  utilities:
+    - component: UtilityJavaType
+      config:
+        javaClass: org.openhab.core.model.script.actions.Things
+        name: things
