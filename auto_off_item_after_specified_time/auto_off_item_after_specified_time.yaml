@@ -1,0 +1,150 @@
+uid: auto_off_item_after_specified_time
+tags: []
+props:
+  parameters: []
+  parameterGroups: []
+timestamp: Jun 27, 2023, 1:47:32 PM
+component: BlockLibrary
+config:
+  name: Auto Off Item
+slots:
+  blocks:
+    - component: BlockType
+      config:
+        args0:
+          - check: String
+            name: item
+            type: input_value
+          - check: Number
+            name: duration
+            type: input_value
+          - name: duration_unit
+            options:
+              - - seconds
+                - plusSeconds
+              - - minutes
+                - plusMinutes
+              - - hours
+                - plusHours
+            type: field_dropdown
+        colour: 300
+        helpUrl: ""
+        inputsInline: true
+        message0: after %2 %3 turn off item %1
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: Automatically turn off Item after X time
+        type: AutoOffItem
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                var tmr, msg; var zdt = Java.type('java.time.ZonedDateTime');
+
+                if (typeof this.timers === 'undefined') {
+                  this.timers = [];
+                }
+
+                function stopTimer(x) {
+                  if (typeof this.timers[x] !== 'undefined' && this.timers[x].isActive()) {
+                    if (typeof this.timers[x] !== 'undefined') {
+                      this.timers[x].cancel();
+                      this.timers[x] = undefined;
+                    }
+                  }
+                }
+
+                tmr = String({{input:item}}) + '_tmr';
+
+                if (itemRegistry.getItem({{input:item}}).getState() == 'ON') {
+                  stopTimer(tmr);
+
+                  if (typeof this.timers[tmr] === 'undefined' || this.timers[tmr].hasTerminated()) {
+                    this.timers[tmr] = {{utility:scriptExecution}}.createTimer({{utility:zdt}}.now().{{field:duration_unit}}({{input:duration}}), function () {
+                          events.sendCommand({{input:item}}, 'OFF');
+                    })
+                  }
+                } else if (itemRegistry.getItem({{input:item}}).getState() == 'OFF') {
+                  stopTimer(tmr);
+                }
+    - component: BlockType
+      config:
+        args0:
+          - check: String
+            name: item
+            type: input_value
+          - check: Number
+            name: duration
+            type: input_value
+          - name: duration_unit
+            options:
+              - - seconds
+                - plusSeconds
+              - - minutes
+                - plusMinutes
+              - - hours
+                - plusHours
+            type: field_dropdown
+          - default: mail@demo
+            name: timer_statement
+            type: input_statement
+        colour: 300
+        helpUrl: ""
+        inputsInline: true
+        message0: after %2 %3 turn off Item %1 %4 and execute statement
+        nextStatement: ""
+        previousStatement: ""
+        tooltip: Automatically turn off Item after X time
+        type: AutoOffItemWithStatement
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                var tmr, msg; var zdt = Java.type('java.time.ZonedDateTime');
+
+                if (typeof this.timers === 'undefined') {
+                  this.timers = [];
+                }
+
+                function stopTimer(x) {
+                  if (typeof this.timers[x] !== 'undefined' && this.timers[x].isActive()) {
+                    if (typeof this.timers[x] !== 'undefined') {
+                      this.timers[x].cancel();
+                      this.timers[x] = undefined;
+                    }
+                  }
+                }
+
+                tmr = String({{input:item}}) + '_tmr';
+
+                if (itemRegistry.getItem({{input:item}}).getState() == 'ON') {
+                  stopTimer(tmr);
+
+                  if (typeof this.timers[tmr] === 'undefined' || this.timers[tmr].hasTerminated()) {
+                    this.timers[tmr] = {{utility:scriptExecution}}.createTimer({{utility:zdt}}.now().{{field:duration_unit}}({{input:duration}}), function () {
+                          events.sendCommand({{input:item}}, 'OFF');
+                          {{statements:timer_statement}}
+                    })
+                  }
+                } else if (itemRegistry.getItem({{input:item}}).getState() == 'OFF') {
+                  stopTimer(tmr);
+                }  
+  utilities:
+    - component: UtilityJavaType
+      config:
+        javaClass: org.openhab.io.openhabcloud.NotificationAction
+        name: notifications
+    - component: UtilityJavaType
+      config:
+        javaClass: org.openhab.core.model.script.actions.ScriptExecution
+        name: scriptExecution
+    - component: UtilityJavaType
+      config:
+        javaClass: java.time.ZonedDateTime
+        name: zdt
+    - component: UtilityJavaType
+      config:
+        javaClass: java.time.format.DateTimeFormatter
+        name: dtf
