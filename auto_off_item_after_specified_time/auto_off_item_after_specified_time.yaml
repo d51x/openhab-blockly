@@ -3,7 +3,7 @@ tags: []
 props:
   parameters: []
   parameterGroups: []
-timestamp: Jun 27, 2023, 1:47:32 PM
+timestamp: Jul 24, 2023, 10:27:55 PM
 component: BlockLibrary
 config:
   name: Auto Off Item
@@ -42,30 +42,26 @@ slots:
               template: >
                 var tmr, msg; var zdt = Java.type('java.time.ZonedDateTime');
 
-                if (typeof this.timers === 'undefined') {
-                  this.timers = [];
-                }
-
                 function stopTimer(x) {
-                  if (typeof this.timers[x] !== 'undefined' && this.timers[x].isActive()) {
-                    if (typeof this.timers[x] !== 'undefined') {
-                      this.timers[x].cancel();
-                      this.timers[x] = undefined;
-                    }
+                  if (cache.private.exists(x) && cache.private.get(x).isActive()) {
+                    if (cache.private.exists(x)) { cache.private.remove(x).cancel(); };
                   }
                 }
 
                 tmr = String({{input:item}}) + '_tmr';
 
-                if (itemRegistry.getItem({{input:item}}).getState() == 'ON') {
+                if (items.getItem({{input:item}}).getState() == 'ON') {
                   stopTimer(tmr);
 
-                  if (typeof this.timers[tmr] === 'undefined' || this.timers[tmr].hasTerminated()) {
-                    this.timers[tmr] = {{utility:scriptExecution}}.createTimer({{utility:zdt}}.now().{{field:duration_unit}}({{input:duration}}), function () {
-                          events.sendCommand({{input:item}}, 'OFF');
-                    })
+                  if (cache.private.exists(tmr) && cache.private.get(tmr).hasTerminated()) {
+                    if (cache.private.exists(tmr) === false || cache.private.get(tmr).hasTerminated()) {
+                      cache.private.put(tmr, {{utility:scriptExecution}}.createTimer(tmr, {{utility:zdt}}.now().{{field:duration_unit}}({{input:duration}}), function () {
+                        events.sendCommand({{input:item}}, 'OFF');
+                        cache.private.remove(tmr);
+                      }));
+                    };
                   }
-                } else if (itemRegistry.getItem({{input:item}}).getState() == 'OFF') {
+                } else if (items.getItem({{input:item}}).getState() == 'OFF') {
                   stopTimer(tmr);
                 }
     - component: BlockType
@@ -104,31 +100,27 @@ slots:
               template: >
                 var tmr, msg; var zdt = Java.type('java.time.ZonedDateTime');
 
-                if (typeof this.timers === 'undefined') {
-                  this.timers = [];
-                }
-
                 function stopTimer(x) {
-                  if (typeof this.timers[x] !== 'undefined' && this.timers[x].isActive()) {
-                    if (typeof this.timers[x] !== 'undefined') {
-                      this.timers[x].cancel();
-                      this.timers[x] = undefined;
-                    }
+                  if (cache.private.exists(x) && cache.private.get(x).isActive()) {
+                    if (cache.private.exists(x)) { cache.private.remove(x).cancel(); };
                   }
                 }
 
                 tmr = String({{input:item}}) + '_tmr';
 
-                if (itemRegistry.getItem({{input:item}}).getState() == 'ON') {
+                if (items.getItem({{input:item}}).getState() == 'ON') {
                   stopTimer(tmr);
 
-                  if (typeof this.timers[tmr] === 'undefined' || this.timers[tmr].hasTerminated()) {
-                    this.timers[tmr] = {{utility:scriptExecution}}.createTimer({{utility:zdt}}.now().{{field:duration_unit}}({{input:duration}}), function () {
-                          events.sendCommand({{input:item}}, 'OFF');
-                          {{statements:timer_statement}}
-                    })
-                  }
-                } else if (itemRegistry.getItem({{input:item}}).getState() == 'OFF') {
+                  if (cache.private.exists(tmr) && cache.private.get(tmr).hasTerminated()) {
+                    if (cache.private.exists(tmr) === false || cache.private.get(tmr).hasTerminated()) {
+                      cache.private.put(tmr, {{utility:scriptExecution}}.createTimer(tmr, {{utility:zdt}}.now().{{field:duration_unit}}({{input:duration}}), function () {
+                        events.sendCommand({{input:item}}, 'OFF');
+                        {{statements:timer_statement}}
+                        cache.private.remove(tmr);
+                      }));
+                    };
+                  }                  
+                } else if (items.getItem({{input:item}}).getState() == 'OFF') {
                   stopTimer(tmr);
                 }  
   utilities:
