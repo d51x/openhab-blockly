@@ -1,10 +1,11 @@
 uid: yandex_station
 tags:
   - YandexStation
+  - marketplace:147629
 props:
   parameters: []
   parameterGroups: []
-timestamp: Jul 4, 2023, 3:10:02 PM
+timestamp: Sep 21, 2023, 2:10:05 PM
 component: BlockLibrary
 config:
   name: Yandex Station
@@ -50,6 +51,45 @@ slots:
               name: STATION
               shadow: true
               type: oh_thing
+    - component: BlockType
+      config:
+        args0:
+          - align: right
+            name: PAUSE
+            type: field_number
+            min: 0
+          - align: right
+            name: MESSAGE
+            type: input_value
+        colour: 0
+        helpUrl: ""
+        inputsInline: false
+        lastDummyAlign0: right
+        message0: pause %1 ms %2
+        tooltip: ""
+        type: pauseForSay
+        output: String
+      slots:
+        code:
+          - component: BlockCodeTemplate
+            config:
+              template: >
+                {{utility:stringWithPause}}({{field:PAUSE}}, {{input:MESSAGE}})
+        toolbox:
+          - component: PresetInput
+            config:
+              fields:
+                TEXT: pause
+              name: PAUSE
+              shadow: true
+              type: text
+          - component: PresetInput
+            config:
+              fields:
+                TEXT: message
+              name: MESSAGE
+              shadow: true
+              type: text
     - component: BlockType
       config:
         args0:
@@ -253,9 +293,9 @@ slots:
       config:
         args0:
           - align: right
+            check: Number
             name: VOLUME
             type: input_value
-            check: Number
           - align: right
             name: STATION
             type: input_value
@@ -342,3 +382,10 @@ slots:
       config:
         javaClass: org.openhab.core.model.script.actions.Things
         name: things
+    - component: UtilityFunction
+      config:
+        code: >
+          function {{name}} (pause, text) {
+            return " sil <[" + pause + "]> " + text;
+          }
+        name: stringWithPause
